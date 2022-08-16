@@ -1,0 +1,12 @@
+scope: "acdc"
+homepageUrl: "https://github.com/trustoverip/acdc/wiki"
+pageTimeoutMs: 2000
+subpageCssSelector: "a.flex-1"
+subpageConfig:
+  idSelector: ""
+  termIdSelector: ""
+  termNameSelector: "h1.gh-header-title"
+  glossaryTextSelector: "div#wiki-body p"
+  createdAtSelector: ""
+  updatedAtSelector: ""
+  subpageTimeoutMs: 1000
