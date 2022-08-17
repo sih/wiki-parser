@@ -9,7 +9,6 @@ public record SubpageConfig(
     String termNameSelector,
     String glossaryTextSelector,
     String createdAtSelector,
-    String updatedAtSelector,
-    int subpageTimeoutMs) {
+    String updatedAtSelector) {
 
 }

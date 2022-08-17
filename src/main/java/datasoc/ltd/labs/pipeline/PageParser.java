@@ -3,10 +3,9 @@ package datasoc.ltd.labs.pipeline;
 import datasoc.ltd.labs.config.SubpageConfig;
 import datasoc.ltd.labs.config.TemplateConfig;
 import java.net.URL;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
@@ -44,21 +43,20 @@ public class PageParser {
     return null;
   }
 
-  Map<String, String> getSubpageElements(URL subpageUrl, SubpageConfig subpageConfig) {
-    Map<String, String> subpageElementsByKey = new HashMap<>();
+  PageData getSubpageElements(URL subpageUrl, TemplateConfig templateConfig) {
+    PageData pageData = null;
     try {
-      Document subpage = Jsoup.parse(subpageUrl, subpageConfig.subpageTimeoutMs());
+      Document subpage = Jsoup.parse(subpageUrl, templateConfig.pageTimeoutMs());
+      SubpageConfig subpageConfig = templateConfig.subpageConfig();
       String termName = subpage.select(subpageConfig.termNameSelector()).text();
+      String id = StringUtils.replace(" ", termName, "-");
       String glossaryText = subpage.select(subpageConfig.glossaryTextSelector()).first().text();
-      subpageElementsByKey.put(TERM_NAME_KEY, termName);
-      subpageElementsByKey.put(GLOSSARY_TEXT_KEY, glossaryText);
+
+      pageData = new PageData(templateConfig.scope(), id, id, termName, glossaryText);
 
     } catch (Exception e) {
       throw new RuntimeException(e);
     }
-    // get index page
-    // extract children as list of urls
-    // for each child
-    return subpageElementsByKey;
+    return pageData;
   }
 }

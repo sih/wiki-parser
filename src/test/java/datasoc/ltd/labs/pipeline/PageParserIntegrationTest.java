@@ -1,7 +1,5 @@
 package datasoc.ltd.labs.pipeline;
 
-import static datasoc.ltd.labs.pipeline.PageParser.GLOSSARY_TEXT_KEY;
-import static datasoc.ltd.labs.pipeline.PageParser.TERM_NAME_KEY;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -9,7 +7,6 @@ import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import datasoc.ltd.labs.config.TemplateConfig;
 import java.net.URL;
 import java.util.List;
-import java.util.Map;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -41,15 +38,16 @@ class PageParserIntegrationTest {
 
   @Test
   void testSubpageParses() {
-    int expectedSize = 2;
+    String expectedId = "authentic-data-container";
+    String expectedTermId = "authentic-data-container";
     String expectedTermName = "authentic data container";
     String expectedGlossaryText = "A mechanism for conveying data that allows the authenticity of its content to be proved.";
-    Map<String, String> elements = pageParser.getSubpageElements(adcPage,
-        acdcConfig.subpageConfig());
-    assertThat(elements).hasSize(expectedSize);
-    assertThat(elements).containsOnlyKeys(TERM_NAME_KEY, GLOSSARY_TEXT_KEY);
-    assertThat(elements.get(TERM_NAME_KEY)).isEqualTo(expectedTermName);
-    assertThat(elements.get(GLOSSARY_TEXT_KEY)).isEqualTo(expectedGlossaryText);
+    PageData data = pageParser.getSubpageElements(adcPage, acdcConfig);
+    assertThat(data).isNotNull();
+    assertThat(data.id()).isEqualTo(expectedId);
+    assertThat(data.termId()).isEqualTo(expectedTermId);
+    assertThat(data.termName()).isEqualTo(expectedTermName);
+    assertThat(data.glossaryText()).isEqualTo(expectedGlossaryText);
   }
 
 }
